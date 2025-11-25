@@ -1,8 +1,15 @@
 {
     "files.associations": {
         ".fantomasignore": "ignore",
+        "*.cpp": "cpp",
         "cmath": "cpp",
         "complex": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "array": "cpp",
+        "fstream": "cpp",
+        "functional": "cpp",
+        "shared_mutex": "cpp",
+        "sstream": "cpp",
+        "tuple": "cpp"
     }
 }
