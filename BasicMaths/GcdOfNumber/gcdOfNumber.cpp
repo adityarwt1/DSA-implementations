@@ -15,7 +15,6 @@ public:
         return findGCD(num2 , num1 %  num2);
     }
 
-
 };
 
 int main() {
