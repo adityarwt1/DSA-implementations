@@ -3,22 +3,24 @@ using namespace std;
 
 class Solution {
 public:
-    map<int , int> factTorialOfNumber(int number , map<int, int> map){
-        /// base condditon
-        // if(number == 1){
-        //     map.        
-        //     return 
-        // }
-    };
-    int gcdOfNumber(int& num1 , int& num2){
-        // storing the value
-        map<int , int> num1Map;
-        map<int , int> num2Map;
+ 
+    int findGCD(int num1, int num2){
+        // in the number is largesdt from the second number
+        // 5 < 15
+
+        if(num2 ==0){
+            return num1;
+        }
+
+        return findGCD(num2 , num1 %  num2);
     }
+
+
 };
 
 int main() {
     Solution sol;
-    
+    int result = sol.findGCD(20 , 15);
+    cout << result  << endl;
     return 0;
 }
