@@ -13,8 +13,7 @@ public:
 
             if(nums[mid] > nums[high]){
                 low = mid +1;
-            }
-            else{
+            }else{
                 high  = mid;
             }
         }
