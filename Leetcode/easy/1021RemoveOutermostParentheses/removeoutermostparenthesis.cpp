@@ -25,7 +25,7 @@ public:
                 if(level > 0 ) result += ch;
             }
         }
-
+        
         return result;
 
     }
