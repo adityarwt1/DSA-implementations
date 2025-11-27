@@ -11,6 +11,8 @@
         "shared_mutex": "cpp",
         "sstream": "cpp",
         "tuple": "cpp",
-        "*.gitkeep": "cpp"
+        "*.gitkeep": "cpp",
+        "new": "cpp",
+        "ostream": "cpp"
     }
 }
