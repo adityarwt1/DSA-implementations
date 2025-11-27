@@ -53,6 +53,39 @@ public:
         }
         return false;
     }
+
+    void deleteNode(int val){
+        // if head is mepty
+        if(head == nullptr){
+            return ;
+        }  
+        
+
+        // if the the head itself the 
+
+        if(head->data ==val){
+            // this is pointing show we are declare
+            Node* temp = head;
+            head  = head->next;
+            delete temp;
+            return ;
+        }
+
+        Node* curr =head;
+
+        while(curr->next !=  nullptr){
+
+            if(curr->next->data == val){
+                Node* temp = head;
+                temp->next  = temp->next->next;
+
+                delete  temp;
+                return ;
+            }
+
+            curr = curr->next;
+        }
+    }
 };
 
 int main() {
@@ -61,8 +94,10 @@ int main() {
     list.insert(10);
     list.insert(20);
 
-    bool result = list.findValue(20);
-    if (result) cout << "Value found" << endl;
+    // bool result = list.findValue(20);
+    // if (result) cout << "Value found" << endl;
+
+    list.deleteNode(10);
 
     list.display();
     return 0;
