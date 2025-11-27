@@ -86,6 +86,12 @@ public:
             curr = curr->next;
         }
     }
+
+    void insertInhead(int val){
+        Node* newNode = new Node(val);
+        newNode->next   = head;
+        head = newNode;
+    }
 };
 
 int main() {
