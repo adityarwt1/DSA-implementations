@@ -31,8 +31,7 @@ public:
             }
 
         }
-
-        return stack.size() == 0;
+        return stack.empty();
     }
 };
 
