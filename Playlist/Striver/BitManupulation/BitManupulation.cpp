@@ -4,45 +4,42 @@ using namespace std;
 class Solution {
 public:
 
-    int reverseNumber(int n ){
+    // Reverse Number
+    int reverseNumber(int n) {
         int ans = 0;
-
-        while(n != 0){
-            int lastNumber = n % 10;
-
-            ans = ans *10 + lastNumber;
-
-            n = n /10;
+        while (n != 0) {
+            int lastDigit = n % 10;
+            ans = ans * 10 + lastDigit;
+            n /= 10;
         }
-
         return ans;
     }
-    long long convertToBinary(int n ){
 
+    // Convert Decimal -> Binary
+    long long convertToBinary(int n) {
         long long ans = 0;
 
-        while(n!= 0){
-            // binary is basically moodules of 
-            ans = ans * 10 + n % 2;
-            n = n /2;
+        while (n != 0) {
+            int bit = n % 2;
+            ans = ans * 10 + bit;
+            n /= 2;
         }
 
-        return ans;
+        // Reverse because we pushed bits backward
+        return reverseNumber(ans);
     }
 
-    int binaryToNumber(int x){
-        int n = reverseNumber(x);
-        int ans =0 ;
-        int index = 0;
-        while(n != 0){
-            int lastNumber = n % 10 ;
+    // Convert Binary -> Decimal
+    int binaryToNumber(long long x) {
+        int ans = 0, index = 0;
 
-            ans += pow(lastNumber , index);
+        while (x != 0) {
+            int lastDigit = x % 10;
+
+            ans += lastDigit * pow(2, index);
 
             index++;
-
-            /// n to 0
-            n = n /10;
+            x /= 10;
         }
 
         return ans;
@@ -51,15 +48,16 @@ public:
 
 int main() {
     Solution sol;
-    int number  = 7;
-    long long result = sol.convertToBinary(number);
-    cout << result << endl;
-    int number2  = 13;
-    long long result2  = sol.convertToBinary(number2);
-    cout << result2 << endl;
+
+    int number = 7;
+    cout << sol.convertToBinary(number) << endl;
+
+    int number2 = 13;
+    cout << sol.convertToBinary(number2) << endl;
+
     // binary to number
-    int example1 = 1011;
-    int numberConverted = sol.binaryToNumber(example1);
-    cout << numberConverted << endl;
+    long long example1 = 1101;
+    cout << sol.binaryToNumber(example1) << endl;
+
     return 0;
 }
