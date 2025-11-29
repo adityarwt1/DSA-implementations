@@ -2,3 +2,4 @@
 31. Next purmutation. 
 46. purmutation.
 inpliment stack using stack que.
+238. Product of iteself lagging itsel for right to left product
