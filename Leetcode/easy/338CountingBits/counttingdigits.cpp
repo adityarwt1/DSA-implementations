@@ -55,6 +55,26 @@ public:
 
        return res;
     }
+
+
+    vector<int> countBitsUsingMultipleTrick(int n){
+
+        vector<int> res(n+1 , 0);
+
+        res[0] = 0;
+        for(int i = 1 ; i <= n ; i++){
+
+
+            if(i % 2 != 0){
+
+                res[i] = res[i/2] +1;
+            }else{
+                res[i] = res[i/2];
+            }
+        }
+
+        return res;
+    }
 };
 
 int main() {
@@ -73,5 +93,13 @@ int main() {
     for(int num: result2){
         cout << num << endl;
     }
+
+    // tesctcase 3
+    int n2 = 2;
+    vector<int> num = sol.countBitsUsingMultipleTrick(n2);
+    for(int n:num){
+        cout << n << endl;
+    }
+
     return 0;
 }
