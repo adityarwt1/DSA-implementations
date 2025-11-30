@@ -58,11 +58,13 @@ public:
 
 
     vector<int> countBitsUsingMultipleTrick(int n){
-
+/**
+ * some observation foud the 6 bit one cout equal to 2 of excact like the 3 show we dice for the even number to i/2
+ * for the odd number observation found the 
+ */
         vector<int> res(n+1 , 0);
 
         res[0] = 0;
-        for(int i = 1 ; i <= n ; i++){
 
 
             if(i % 2 != 0){
