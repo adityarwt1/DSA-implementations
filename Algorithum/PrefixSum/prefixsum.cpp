@@ -12,7 +12,8 @@ public:
     vector<int> prifixSum(vector<int> nums){
         vector<int> prefixSum(nums.size());
 
-        // access the previous so first asign the value
+        // access the previous so first asign the value // array is empty it might be not working 
+        // when the array have the only one element not work
         prefixSum[0] = nums[0];
 
         for(int i  = 1 ; i <  nums.size() ; i++){
