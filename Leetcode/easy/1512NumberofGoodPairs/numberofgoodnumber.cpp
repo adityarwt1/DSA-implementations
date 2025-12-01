@@ -15,7 +15,7 @@ public:
           count += map[num];
 
           map[num] += 1;
-        }else{
+        }else{     
           map[num] += 1;
         }
 
