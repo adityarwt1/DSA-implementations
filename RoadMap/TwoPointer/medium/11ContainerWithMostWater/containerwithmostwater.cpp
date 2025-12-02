@@ -31,6 +31,8 @@ public:
 
 int main() {
     Solution sol;
-    
+    vector<int> height = {1,8,6,2,5,4,8,3,7};
+    int solution = sol.maxArea(height);
+    cout << solution << endl;
     return 0;
 }
