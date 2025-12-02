@@ -19,6 +19,8 @@ public:
 };
 int main() {
     Solution sol;
-    
+    int a = 3 , b = 5;
+    int result = sol.getSum(a, b);
+    cout << result << endl;
     return 0;
 }
