@@ -46,7 +46,26 @@ class LinkedList{
              temp = temp->next;
         }
     }
+
+    void deleteNodeValue(int x){
+
+        ListNode* temp = head;
+
+        while(temp != NULL);{
+
+            if(temp->next->val == x){
+                temp = temp->next->next;
+                return ;
+            }
+
+            temp = temp->next;
+        }
+
+
+    }
 };
+
+
 // class MyLinkedList {
 // public:
 //     ListNode* head;
