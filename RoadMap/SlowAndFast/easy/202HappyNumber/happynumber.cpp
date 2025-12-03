@@ -31,6 +31,7 @@ public:
 };
 int main() {
     Solution sol;
-    
+    int number = 19;
+    bool answer = sol.isHappy(number);
     return 0;
 }
