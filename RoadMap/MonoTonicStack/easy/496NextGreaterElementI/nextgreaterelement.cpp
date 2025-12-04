@@ -3,45 +3,39 @@ using namespace std;
 
 class Solution {
 public:
-    vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
-        // storing the greate element for tghe nums21 vector
-         unordered_map<int ,int> nge;
+    vector<int> nextGreaterElements(vector<int>& nums) {
+        int n = nums.size();
 
-         // when at the end of the stack have the greater element
-         stack<int> st;
+        vector<int> ans(n, -1);
+        stack<int> st;
 
+        // Traverse the array twice (circular)
+        for(int i = 0; i < 2 * n; i++) {
 
-         // nums2 for the comparigng the nums1 value
-         for(int num :nums2){
+            int idx = i % n;
 
-            // if the currren value larger so tha tthe next value is also the larger
-            while(!st.empty() && num > st.top()){
-                nge[st.top()] = num;
+            while(!st.empty() && nums[idx] > nums[st.top()]) {
+                ans[st.top()] = nums[idx];
                 st.pop();
             }
-            // starogint the value
-            st.push(num);
-         }
-         
-         // remainng element have no enxt greter elemen
-         while(!st.empty()){
-            nge[st.top()] = -1;
-            st.pop();
-         }
 
-         vector<int> ans;
-         for(int num:nums1){
-            ans.push_back(nge[num]);
-         }
+            // Only push during first round
+            if(i < n) st.push(idx);
+        }
 
-         return ans;
+        return ans;
     }
-
-
 };
+
+
 int main() {
     Solution sol;
+    vector<int> nums = {1,2,1};
+    vector<int> output = sol.nextGreaterElements(nums);
 
+    for(auto num:output){
+        cout << num << endl;
+    }
     return 0;
 }
 /// notte by own
