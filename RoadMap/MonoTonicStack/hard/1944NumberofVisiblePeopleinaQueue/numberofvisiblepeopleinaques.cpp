@@ -20,7 +20,6 @@ public:
 
             // If stack not empty, first taller person is visible
             if (!st.empty()) count++;
-
             ans[i] = count;
 
             // Push current person
