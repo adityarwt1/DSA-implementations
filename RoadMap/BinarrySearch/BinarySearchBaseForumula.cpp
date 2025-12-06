@@ -39,6 +39,11 @@ public:
 };
 int main() {
     Solution sol;
-    
+    vector<int> nums= { -1,0,3,5,9,12};
+    int target = 9;
+
+    int output  = sol.search(nums, target);
+
+    cout << output<< endl;
     return 0;
 }
