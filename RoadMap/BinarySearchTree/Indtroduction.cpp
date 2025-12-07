@@ -26,6 +26,39 @@ public:
 
         return root;
     }
+
+    bool serchIntheTree(TreeNode* root , int val){
+
+        if(!root) return false;
+
+
+        if(root->val == val) return true;
+
+
+        if(val < root->val){
+            serchIntheTree(root->left, val);
+        }
+
+        return serchIntheTree(root->right , val);
+    }
+
+    int findMin(TreeNode* root){
+        // just before the end// stoped before the end
+        while(root->left) root = root->left;
+
+        return root->val;
+    }
+
+    int findMax(TreeNode* root){
+        
+        // just staop /// as we know max in the right always
+
+        while(root->right) root = root->right;
+
+        return root->val;
+    }
+    
+
 };
 
 int main() {
