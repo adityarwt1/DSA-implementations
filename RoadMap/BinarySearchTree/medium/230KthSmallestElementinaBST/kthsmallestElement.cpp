@@ -43,3 +43,6 @@ int main() {
     
     return 0;
 }
+
+/// for the smallest one need to go left for the smallest one value
+/// to neeche karana hoga ho search to pahel to push kar deta hai stack, me phir oopar se k minus karate karte return kar denge
