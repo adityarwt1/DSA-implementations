@@ -26,3 +26,5 @@ int main() {
     
     return 0;
 }
+
+// for this situation simple fabiounachhi serious vala recursoin apply ho raha aur kuchh nahi
