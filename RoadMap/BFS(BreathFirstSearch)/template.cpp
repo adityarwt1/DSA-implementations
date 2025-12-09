@@ -29,6 +29,32 @@ public:
             }
         }
     }
+
+    void myBFS(int start, vector<vector<int>>& graph){
+
+        queue<int> q;
+
+        vector<int> visited(graph.size() , 0);
+
+        visited[start] =1;
+        q.push(start);
+
+        while(!q.empty()){
+            // pahala eleemnt nikalata hai
+            int node = q.front();
+
+            q.pop();
+
+
+            for(int nei:graph[node]){
+                if(!visited[nei]){
+                    visited[nei] = 1;
+                    q.push(nei);
+                }
+            }
+        }
+        
+    }
 };
 
 int main() {
