@@ -5,3 +5,4 @@ inpliment stack using stack que.
 238. Product of iteself lagging itsel for right to left product
 206. reverse linked list.
 92. Reverse Linked List II.
+200. Number of islands.
