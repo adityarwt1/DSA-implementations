@@ -13,7 +13,7 @@ struct TreeNode {
 class Solution {
 public:
     int minDepth(TreeNode* root) {
-        // edge case when the root not exist
+        // edge case when the root not   exist
         if(!root) return 0;
         int depth = 1;
         queue<TreeNode*> q;
