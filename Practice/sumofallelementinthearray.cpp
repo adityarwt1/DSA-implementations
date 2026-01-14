@@ -1,20 +1,7 @@
-//
-// Created by adity on 01-01-2026.
-//
-#include<bits/stdc++.h>
-#include <iostream>
-
+#include <bits/stdc++.h>
 using namespace std;
 
-class Solution {
-public:
-    static int sumOfNumber(int a , int b) {
-        return a+b;
-    }
-};
-int main() {
-    Solution s;
-    cout << Solution::sumOfNumber(2,3) << endl;
+int main(){
+    cout << "Hellow, wordld!" << endl;
     return 0;
-
 }
