@@ -1,0 +1,2 @@
+# bubble sort me ek certain container jo slide karega poore array vaise socho, jo ki doo loop hi honge basically to, ye ulata hoke chalega. 
+# ye to oppositte side se chlata hai agar, ye j ki range hoti hai i -j jisase bubble ban paye aur sort karna asan ho.
