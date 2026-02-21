@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DASH MPD Player & Analyzer</title>
+    <script src="https://cdn.dashjs.org/latest/dash.all.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1em;
+        }
+
+        .player-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%;
+            background: #000;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .upload-section {
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .file-input {
+            opacity: 0;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .file-label {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #667eea;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .file-label:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+        }
+
+        .info-card h3 {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .info-card .value {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .streams-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+        }
+
+        .stream-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .stream-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .stream-type {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.1em;
+        }
+
+        .stream-badge {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .stream-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .stream-detail {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .stream-detail strong {
+            color: #333;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .warning-box h4 {
+            color: #856404;
+            margin-bottom: 5px;
+        }
+
+        .warning-box p {
+            color: #856404;
+            font-size: 0.9em;
+        }
+
+        .error-box {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .error-box h4 {
+            color: #721c24;
+            margin-bottom: 5px;
+        }
+
+        .error-box p {
+            color: #721c24;
+            font-size: 0.9em;
+        }
+
+        .success-box {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .success-box h4 {
+            color: #155724;
+            margin-bottom: 5px;
+        }
+
+        .success-box p {
+            color: #155724;
+            font-size: 0.9em;
+        }
+
+        .button {
+            padding: 10px 25px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+
+        .button:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎬 DASH MPD Player & Analyzer</h1>
+            <p class="subtitle">Upload and analyze DASH manifest files</p>
+        </div>
+
+        <div class="player-section">
+            <div class="upload-section">
+                <div class="file-input-wrapper">
+                    <input type="file" id="mpdFile" accept=".mpd" class="file-input">
+                    <label for="mpdFile" class="file-label">📁 Upload MPD File</label>
+                </div>
+                <div id="fileName" style="margin-top: 10px; color: #666;"></div>
+            </div>
+
+            <div id="statusBox"></div>
+
+            <div class="video-container">
+                <video id="videoPlayer" controls></video>
+            </div>
+
+            <div class="controls">
+                <button class="button" id="playBtn" disabled>▶️ Play</button>
+                <button class="button" id="pauseBtn" disabled>⏸️ Pause</button>
+                <button class="button" id="reloadBtn" disabled>🔄 Reload</button>
+            </div>
+
+            <div id="mpdInfo" style="display: none;">
+                <h2 style="margin: 30px 0 20px 0; color: #333;">📊 MPD Information</h2>
+                <div class="info-grid" id="infoGrid"></div>
+            </div>
+        </div>
+
+        <div class="streams-section" id="streamsSection" style="display: none;">
+            <h2 style="margin-bottom: 20px; color: #333;">🎞️ Available Streams</h2>
+            <div id="streamsList"></div>
+        </div>
+    </div>
+
+    <script>
+        let player;
+        let currentMpdUrl;
+        const videoPlayer = document.getElementById('videoPlayer');
+        const mpdFileInput = document.getElementById('mpdFile');
+        const playBtn = document.getElementById('playBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const reloadBtn = document.getElementById('reloadBtn');
+
+        // Initialize dash.js player
+        function initPlayer() {
+            player = dashjs.MediaPlayer().create();
+            player.initialize(videoPlayer, null, false);
+            
+            player.on(dashjs.MediaPlayer.events.ERROR, function(e) {
+                console.error('DASH Player Error:', e);
+                showError('Playback Error', e.error?.message || 'An error occurred during playback.');
+            });
+
+            player.on(dashjs.MediaPlayer.events.MANIFEST_LOADED, function(e) {
+                console.log('Manifest loaded successfully');
+                analyzeMPD(e.data);
+            });
+        }
+
+        mpdFileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            document.getElementById('fileName').textContent = `Selected: ${file.name}`;
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const mpdContent = event.target.result;
+                
+                // Create a blob URL for the MPD file
+                const blob = new Blob([mpdContent], { type: 'application/dash+xml' });
+                currentMpdUrl = URL.createObjectURL(blob);
+                
+                // Parse and analyze the MPD
+                parseMPDContent(mpdContent);
+                
+                // Try to load in player
+                loadMPDInPlayer(currentMpdUrl);
+            };
+            reader.readAsText(file);
+        });
+
+        function loadMPDInPlayer(url) {
+            try {
+                if (!player) {
+                    initPlayer();
+                }
+                
+                showWarning('Loading Video', 'Attempting to load video. Note: This will only work if the video segment files are accessible at the paths specified in the MPD.');
+                
+                player.attachSource(url);
+                playBtn.disabled = false;
+                pauseBtn.disabled = false;
+                reloadBtn.disabled = false;
+                
+            } catch (error) {
+                showError('Player Error', error.message);
+            }
+        }
+
+        function parseMPDContent(mpdContent) {
+            try {
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(mpdContent, 'text/xml');
+                
+                // Extract basic information
+                const mpd = xmlDoc.querySelector('MPD');
+                const duration = mpd.getAttribute('mediaPresentationDuration');
+                const type = mpd.getAttribute('type');
+                const profiles = mpd.getAttribute('profiles');
+                
+                // Get adaptation sets
+                const adaptationSets = xmlDoc.querySelectorAll('AdaptationSet');
+                const representations = xmlDoc.querySelectorAll('Representation');
+                
+                // Show info
+                document.getElementById('mpdInfo').style.display = 'block';
+                const infoGrid = document.getElementById('infoGrid');
+                
+                // Parse duration
+                const durationMatch = duration?.match(/PT(\d+(?:\.\d+)?)S/);
+                const durationSeconds = durationMatch ? parseFloat(durationMatch[1]) : 0;
+                const durationFormatted = formatDuration(durationSeconds);
+                
+                infoGrid.innerHTML = `
+                    <div class="info-card">
+                        <h3>Duration</h3>
+                        <div class="value">${durationFormatted}</div>
+                    </div>
+                    <div class="info-card">
+                        <h3>Type</h3>
+                        <div class="value">${type || 'N/A'}</div>
+                    </div>
+                    <div class="info-card">
+                        <h3>Streams</h3>
+                        <div class="value">${adaptationSets.length}</div>
+                    </div>
+                    <div class="info-card">
+                        <h3>Qualities</h3>
+                        <div class="value">${representations.length}</div>
+                    </div>
+                `;
+                
+                // Parse streams
+                parseStreams(xmlDoc);
+                
+                // Check for encryption
+                const contentProtection = xmlDoc.querySelector('ContentProtection');
+                if (contentProtection) {
+                    showWarning('DRM Protected Content', 'This content is encrypted and requires DRM (Digital Rights Management) licenses to play. You will need the appropriate decryption keys.');
+                }
+                
+            } catch (error) {
+                showError('Parsing Error', 'Failed to parse MPD file: ' + error.message);
+            }
+        }
+
+        function parseStreams(xmlDoc) {
+            const streamsSection = document.getElementById('streamsSection');
+            const streamsList = document.getElementById('streamsList');
+            streamsSection.style.display = 'block';
+            streamsList.innerHTML = '';
+            
+            const representations = xmlDoc.querySelectorAll('Representation');
+            
+            representations.forEach((rep, index) => {
+                const id = rep.getAttribute('id');
+                const bandwidth = rep.getAttribute('bandwidth');
+                const codecs = rep.getAttribute('codecs');
+                const mimeType = rep.getAttribute('mimeType');
+                const width = rep.getAttribute('width');
+                const height = rep.getAttribute('height');
+                const audioSamplingRate = rep.getAttribute('audioSamplingRate');
+                
+                const isVideo = mimeType?.includes('video');
+                const isAudio = mimeType?.includes('audio');
+                
+                const streamType = isVideo ? 'Video' : isAudio ? 'Audio' : 'Unknown';
+                const typeIcon = isVideo ? '🎥' : isAudio ? '🔊' : '📄';
+                
+                let detailsHTML = '';
+                if (isVideo) {
+                    detailsHTML = `
+                        <div class="stream-detail"><strong>Resolution:</strong> ${width}x${height}</div>
+                        <div class="stream-detail"><strong>Bitrate:</strong> ${formatBitrate(bandwidth)}</div>
+                        <div class="stream-detail"><strong>Codec:</strong> ${codecs}</div>
+                    `;
+                } else if (isAudio) {
+                    detailsHTML = `
+                        <div class="stream-detail"><strong>Sample Rate:</strong> ${audioSamplingRate} Hz</div>
+                        <div class="stream-detail"><strong>Bitrate:</strong> ${formatBitrate(bandwidth)}</div>
+                        <div class="stream-detail"><strong>Codec:</strong> ${codecs}</div>
+                    `;
+                }
+                
+                const streamCard = `
+                    <div class="stream-card">
+                        <div class="stream-header">
+                            <span class="stream-type">${typeIcon} ${streamType} Stream ${id}</span>
+                            <span class="stream-badge">${mimeType}</span>
+                        </div>
+                        <div class="stream-details">
+                            ${detailsHTML}
+                        </div>
+                    </div>
+                `;
+                
+                streamsList.innerHTML += streamCard;
+            });
+        }
+
+        function analyzeMPD(manifest) {
+            console.log('Full manifest data:', manifest);
+            showSuccess('Manifest Loaded', 'The MPD manifest was successfully loaded by the player.');
+        }
+
+        function formatDuration(seconds) {
+            const hours = Math.floor(seconds / 3600);
+            const minutes = Math.floor((seconds % 3600) / 60);
+            const secs = Math.floor(seconds % 60);
+            
+            if (hours > 0) {
+                return `${hours}h ${minutes}m ${secs}s`;
+            } else if (minutes > 0) {
+                return `${minutes}m ${secs}s`;
+            } else {
+                return `${secs}s`;
+            }
+        }
+
+        function formatBitrate(bps) {
+            const kbps = bps / 1000;
+            const mbps = kbps / 1000;
+            
+            if (mbps >= 1) {
+                return `${mbps.toFixed(2)} Mbps`;
+            } else {
+                return `${kbps.toFixed(0)} Kbps`;
+            }
+        }
+
+        function showWarning(title, message) {
+            const statusBox = document.getElementById('statusBox');
+            statusBox.innerHTML = `
+                <div class="warning-box">
+                    <h4>⚠️ ${title}</h4>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+
+        function showError(title, message) {
+            const statusBox = document.getElementById('statusBox');
+            statusBox.innerHTML = `
+                <div class="error-box">
+                    <h4>❌ ${title}</h4>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+
+        function showSuccess(title, message) {
+            const statusBox = document.getElementById('statusBox');
+            statusBox.innerHTML = `
+                <div class="success-box">
+                    <h4>✅ ${title}</h4>
+                    <p>${message}</p>
+                </div>
+            `;
+        }
+
+        playBtn.addEventListener('click', () => {
+            videoPlayer.play();
+        });
+
+        pauseBtn.addEventListener('click', () => {
+            videoPlayer.pause();
+        });
+
+        reloadBtn.addEventListener('click', () => {
+            if (currentMpdUrl) {
+                loadMPDInPlayer(currentMpdUrl);
+            }
+        });
+
+        // Auto-load the embedded MPD if provided
+        window.addEventListener('load', function() {
+            // You can embed the MPD content here if needed
+            const embeddedMPD = `<?xml version="1.0" encoding="UTF-8"?>
+<!--Generated with https://github.com/shaka-project/shaka-packager version v3.4.2-c819dea-release-->
+<MPD xmlns="urn:mpeg:dash:schema:mpd:2011" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:mpeg:dash:schema:mpd:2011 DASH-MPD.xsd" xmlns:cenc="urn:mpeg:cenc:2013" profiles="urn:mpeg:dash:profile:isoff-live:2011" minBufferTime="PT2S" type="static" mediaPresentationDuration="PT6594.200195S">
+  <Period id="0">
+    <AdaptationSet id="0" contentType="audio" startWithSAP="1" segmentAlignment="true">
+      <ContentProtection value="cenc" schemeIdUri="urn:mpeg:dash:mp4protection:2011" cenc:default_KID="cf5dcf7b-a193-6c23-b573-2beca84ab99d"/>
+      <ContentProtection schemeIdUri="urn:uuid:1077efec-c0b2-4d02-ace3-3c1e52e2fb4b">
+        <cenc:pssh>AAAANHBzc2gBAAAAEHfv7MCyTQKs4zweUuL7SwAAAAHPXc97oZNsI7VzK+yoSrmdAAAAAA==</cenc:pssh>
+      </ContentProtection>
+      <Representation id="0" bandwidth="139214" codecs="mp4a.40.2" mimeType="audio/mp4" audioSamplingRate="48000">
+        <AudioChannelConfiguration schemeIdUri="urn:mpeg:dash:23003:3:audio_channel_configuration:2011" value="2"/>
+        <SegmentTemplate timescale="48000" initialization="dash/audio/init.mp4" media="dash/audio/$Number$.mp4" startNumber="1">
+          <SegmentTimeline>
+            <S t="0" d="192512"/>
+          </SegmentTimeline>
+        </SegmentTemplate>
+      </Representation>
+    </AdaptationSet>
+  </Period>
+</MPD>`;
+            
+            if (embeddedMPD) {
+                parseMPDContent(embeddedMPD);
+                const blob = new Blob([embeddedMPD], { type: 'application/dash+xml' });
+                currentMpdUrl = URL.createObjectURL(blob);
+            }
+        });
+
+        // Initialize player on load
+        initPlayer();
+    </script>
+</body>
+</html>
