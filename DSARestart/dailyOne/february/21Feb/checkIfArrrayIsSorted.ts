@@ -23,6 +23,7 @@ const isSorted1 = checkArrayIsSorted(testArrray)
 console.log(isSorted1 ? "Array is sorted as the program:":"array is not sorted!")
 const isSorted2 = checkArrayIsSorted(testArray2)
 console.log(isSorted2 ? "this return true ":"array is not sorted!")
+
 // this metthod probabily not working on the case of the real dsa roated array quesiton 
 
 const check  = (nums:number[]):boolean=>{
