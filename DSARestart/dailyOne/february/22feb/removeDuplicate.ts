@@ -5,22 +5,15 @@
 
 // test array 
 const array = [0,0,1,1,1,2,2,3,3,4]
-
-/// function from remove the element
 const removeDuplicate = (nums:number[])=>{
-    // let say we need to remove frm the 0 index if have the duplicate value at the upnext
     let k = 0;
-
     for(let i = 1 ; i < nums.length; i++){
-        /// matlab ki agar vo value match nahi karata tabhi change karana hai
         if(nums[i] === nums[i-1]){
             nums[k++] = nums[i]
         }
         
     }
-
     return k
-
  }
 
 // my first approach questoin 
